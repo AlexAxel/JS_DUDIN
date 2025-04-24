@@ -23,8 +23,9 @@ class MySelect extends HTMLElement {
         const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: './my-select.css' });
         const btn = Object.assign(document.createElement('button'), { className: 'select-button', textContent: '—' });
         const popup = Object.assign(document.createElement('div'), { className: 'select-popup' });
-        const search = Object.assign(document.createElement('input'), { className: 'select-popup-search', placeholder: 'Search...' });
         const box = Object.assign(document.createElement('div'), { className: 'select-popup-options' });
+        const search = Object.assign(document.createElement('input'), { className: 'select-popup-search', placeholder: 'Search...' });
+        search.addEventListener('input', () => this.#filterOptions(search.value));
 
         popup.append(search, box);
         this.shadowRoot.append(link, btn, popup);
@@ -47,6 +48,14 @@ class MySelect extends HTMLElement {
             this.#selectButton.textContent = count === 1
                 ? selected[0].closest('label')?.querySelector('span')?.textContent || '—'
                 : count > 1 ? `Выбрано элементов: ${count}` : '—';
+        });
+    }
+
+    #filterOptions(value) {
+        const query = value.trim().toLowerCase();
+        this.#optionsBox.querySelectorAll('.option').forEach((label) => {
+            const text = label.querySelector('span').textContent.toLowerCase();
+            label.style.display = query && !text.includes(query) ? 'none' : '';
         });
     }
 
