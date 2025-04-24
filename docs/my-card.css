@@ -3,7 +3,7 @@
     border-radius: 6px;
     padding: 12px;
     max-width: 320px;
-    font: 14px/1 sans-serif;
+    font: 14px/1.4 sans-serif;
 }
 .card-header {
     margin-bottom: 8px;
@@ -15,4 +15,9 @@
 .card-title {
     margin: 0;
     font-size: 16px;
+}
+.card-subtitle {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #666;
 }
