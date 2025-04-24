@@ -14,12 +14,23 @@ components.forEach(name => {
 
 function init() { // создаём <my-card> и помещаем в него <my-select>
     const card = document.createElement('my-card');
-    card.setAttribute('data-header', 'Выбор фруктов');
+    card.setAttribute('header', 'Выбор фруктов');
+    card.setAttribute('sub-header', 'Демонстрация');
 
     // footer
     const footer = document.createElement('div');
     footer.setAttribute('slot', 'footer');
-    // footer.innerHTML = `<button disabled>...</button>`;
+
+    const btn = document.createElement('button');
+    btn.textContent = 'Изменить заголовки';
+
+    footer.append(btn);
+    btn.addEventListener('click', () => {
+        const now = Date.now().toString().slice(-4);
+        card.setAttribute('header', `Выбор фруктов :upd${now}`);
+        card.setAttribute('sub-header', `Случайный ID: ${Math.floor(Math.random() * 1000)}`);
+    });
+
     card.append(footer);
 
     // select
