@@ -9,9 +9,8 @@ btn.addEventListener('click', () => {
     if (!window.Worker) { alert('Web Workers не поддерживаются'); return; }
 
     if (!worker) { // оздаём воркер только при первом запуске
-        // worker = new Worker('./worker.js', { type: 'module' });
-        const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
-
+        worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+        worker.onerror = (err) => console.error('worker error', err);
         worker.onmessage = (e) => {
             // activeTasks--;
             spinner.hidden = true;
@@ -22,9 +21,7 @@ btn.addEventListener('click', () => {
                 worker.terminate();
                 worker = null; // позволит создать нового на след. клике
             }
-        };
-
-        worker.onerror = (err) => console.error('worker error', err);
+        };        
     }
 
     // отправляем новую задачу текущему (или новому) воркеру
