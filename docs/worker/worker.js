@@ -1,13 +1,20 @@
-// получает timeout, выполняет медленную функцию и шлёт результат
-const slowFunction = (timeout = 3000) => {
-    const start = performance.now();
-    let x = 0, i = 0;
-    
-    while (performance.now() - start < timeout) x += (Math.random() - .5) * ++i;
-    return { iterations: i, sum: x.toFixed(2) };
-};
-
+// получаем запрос от основного потока и создаём дочерний воркер worker-2.js и возвращаем ответ наверх
 self.onmessage = (e) => {
-    const ms = e.data?.timeout ?? 3000;
-    self.postMessage(slowFunction(ms));
+    // создаём потомка-воркера
+    const child = new Worker(new URL('./worker-2.js', import.meta.url), { type: 'module' });
+
+    // когда потомок пришлёт ответ - отправляем результат в основной поток
+    child.onmessage = (ev) => {
+        self.postMessage(ev.data); // вверх
+        child.terminate();
+    };
+
+    // пробрасываем ошибки наверх
+    child.onerror = (err) => {
+        self.postMessage({ error: err.message });
+        child.terminate();
+    };
+
+    // передаём те же параметры (timeout)
+    child.postMessage(e.data);
 };
