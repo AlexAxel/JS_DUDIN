@@ -2,11 +2,23 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Module 1.5</title>
+  <title>Module 2.1</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #log .line { margin: 4px 0; }
+    .green { color: #2e7d32; font-weight: bold; }
+    .orange { color: #ef6c00; font-weight: bold; }
+    .red { color: #c62828; font-weight: bold; }
+    .wait { color: #999; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <h2>Компоненты [my-select] и [my-card]</h2>
+  <h2>Компоненты [my-select] и [my-card] + Web Workers API</h2>
+
+  <button id="start">СТАРТ (Web Workers API)</button>
+  <div id="log"></div>
 
   <script src="./index.js"></script>
+  <script src="./worker/worker-ui.js" type="module"></script>
 </body>
 </html>
